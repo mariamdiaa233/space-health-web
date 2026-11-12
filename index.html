@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102b46">
+  <title>Space Health | مراقبة الصحة الذكية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">✦</div><div><b>SPACE HEALTH</b><small>Smart health companion</small></div></div>
+      <div class="profile-mini"><div class="avatar">م</div><div><b>ملف المريض</b><small>مستخدم تجريبي</small></div></div>
+      <nav>
+        <a class="nav-link active" href="#overview" data-section="overview"><span>▦</span> نظرة عامة</a>
+        <a class="nav-link" href="#glucose" data-section="glucose"><span>◉</span> متابعة السكر</a>
+        <a class="nav-link" href="#vitals" data-section="vitals"><span>♡</span> المؤشرات الحيوية</a>
+        <a class="nav-link" href="#device" data-section="device"><span>⌚</span> ربط الساعة</a>
+        <a class="nav-link" href="#alerts" data-section="alerts"><span>♢</span> التنبيهات</a>
+        <a class="nav-link" href="#reports" data-section="reports"><span>▤</span> السجل والتقارير</a>
+        <a class="nav-link" href="#profile" data-section="profile"><span>◎</span> ملف المريض</a>
+      </nav>
+      <div class="sidebar-foot"><span class="pulse-dot"></span> النظام يعمل بالوضع التجريبي</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="القائمة">☰</button>
+        <div><div class="eyebrow">لوحة التحكم الصحية</div><h1 id="pageTitle">نظرة عامة</h1></div>
+        <div class="top-actions"><span class="date" id="todayDate"></span><button class="icon-btn" id="notifyBtn" title="التنبيهات">♢</button><div class="avatar small">م</div></div>
+      </header>
+
+      <section class="page-section active" id="overview">
+        <div class="welcome-row"><div><h2>مرحبًا بك 👋</h2><p>تابع مؤشراتك الصحية من مكان واحد.</p></div><div class="connection-pill" id="connectionPill"><i></i> الساعة غير متصلة</div></div>
+        <div class="notice info"><b>ⓘ وضع العرض التجريبي</b><span>القراءات المعروضة تجريبية وليست قياسات طبية حقيقية.</span></div>
+        <div class="metric-grid">
+          <article class="metric-card glucose-card"><div class="metric-head"><span>مستوى الجلوكوز</span><span class="metric-icon">◉</span></div><div class="metric-value"><strong id="glucoseValue">108</strong><small>mg/dL</small></div><div class="metric-foot"><span class="status normal" id="glucoseStatus">ضمن النطاق التجريبي</span><span>آخر قراءة الآن</span></div></article>
+          <article class="metric-card"><div class="metric-head"><span>معدل ضربات القلب</span><span class="metric-icon pink">♡</span></div><div class="metric-value"><strong id="heartValue">72</strong><small>BPM</small></div><div class="metric-foot"><span class="status normal">قراءة تجريبية</span><span>نبضة / دقيقة</span></div></article>
+          <article class="metric-card"><div class="metric-head"><span>الأكسجين بالدم</span><span class="metric-icon blue">◌</span></div><div class="metric-value"><strong id="spo2Value">98</strong><small>%</small></div><div class="metric-foot"><span class="status normal">قراءة تجريبية</span><span>SpO₂</span></div></article>
+          <article class="metric-card"><div class="metric-head"><span>درجة الحرارة</span><span class="metric-icon orange">♨</span></div><div class="metric-value"><strong id="tempValue">36.7</strong><small>°C</small></div><div class="metric-foot"><span class="status normal">قراءة تجريبية</span><span>حرارة الجسم</span></div></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>اتجاه مستوى السكر</h3><p>تغير القراءات خلال آخر 12 ساعة</p></div><span class="tag">تجريبي</span></div><div class="chart-wrap"><canvas id="overviewChart"></canvas></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>حالة الجهاز</h3><p>ملخص اتصال الساعة الذكية</p></div></div><div class="device-summary"><div class="watch-illustration">⌚</div><b id="deviceStatusText">لم يتم توصيل الساعة</b><p id="deviceSubText">اربط ساعتك لبدء استقبال البيانات.</p><button class="primary-btn" data-go="device">إعداد الاتصال</button></div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h3>آخر التنبيهات</h3><p>مستجدات الحالة الصحية</p></div><a href="#alerts" class="text-link" data-go="alerts">عرض الكل ←</a></div><div id="recentAlerts" class="alert-list"></div></article>
+      </section>
+
+      <section class="page-section" id="glucose">
+        <div class="section-intro"><h2>متابعة مستوى الجلوكوز</h2><p>قراءات السكر واتجاهاتها — بيانات تجريبية لأغراض العرض فقط.</p></div>
+        <div class="metric-grid two"><article class="metric-card glucose-card"><div class="metric-head"><span>القراءة الحالية</span><span class="tag">تجريبي</span></div><div class="metric-value"><strong id="glucoseValue2">108</strong><small>mg/dL</small></div><span class="status normal" id="glucoseStatus2">ضمن النطاق التجريبي</span></article><article class="metric-card"><div class="metric-head"><span>متوسط القراءات التجريبية</span></div><div class="metric-value"><strong id="averageValue">112</strong><small>mg/dL</small></div><span class="muted">متوسط بيانات العرض الحالية</span></article></div>
+        <article class="panel"><div class="panel-heading"><div><h3>الرسم البياني للسكر</h3><p>يمكن متابعة تغير القراءات عبر الوقت</p></div></div><div class="chart-wrap tall"><canvas id="glucoseChart"></canvas></div></article>
+        <article class="panel"><h3>معلومات مهمة</h3><p class="muted">النطاقات المستهدفة تختلف من شخص لآخر حسب الخطة العلاجية. لا تعتمد على هذه الواجهة لاتخاذ قرار علاجي أو تعديل جرعات الدواء.</p></article>
+      </section>
+
+      <section class="page-section" id="vitals">
+        <div class="section-intro"><h2>المؤشرات الحيوية</h2><p>عرض المؤشرات التي يمكن أن تدعمها المستشعرات المتصلة.</p></div>
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-head"><span>ضربات القلب</span><span class="metric-icon pink">♡</span></div><div class="metric-value"><strong id="heartValue2">72</strong><small>BPM</small></div><span class="muted">بيانات تجريبية</span></article>
+          <article class="metric-card"><div class="metric-head"><span>الأكسجين</span><span class="metric-icon blue">◌</span></div><div class="metric-value"><strong id="spo2Value2">98</strong><small>%</small></div><span class="muted">بيانات تجريبية</span></article>
+          <article class="metric-card"><div class="metric-head"><span>الحرارة</span><span class="metric-icon orange">♨</span></div><div class="metric-value"><strong id="tempValue2">36.7</strong><small>°C</small></div><span class="muted">بيانات تجريبية</span></article>
+          <article class="metric-card"><div class="metric-head"><span>النشاط الحركي</span><span class="metric-icon">⌁</span></div><div class="metric-value"><strong id="stepsValue">3,240</strong><small>خطوة</small></div><span class="muted">محاكاة للعرض</span></article>
+        </div>
+      </section>
+
+      <section class="page-section" id="device">
+        <div class="section-intro"><h2>ربط الساعة الذكية</h2><p>الاتصال بالساعة عبر Bluetooth Low Energy عند توفر جهاز متوافق.</p></div>
+        <div class="content-grid">
+          <article class="panel device-connect"><div class="watch-illustration large">⌚</div><h3>اتصال الجهاز</h3><p id="bleMessage" class="muted">اضغطي على الزر للبحث عن ساعة تدعم Bluetooth Low Energy.</p><div class="device-state" id="deviceState"><i></i><span>غير متصل</span></div><button class="primary-btn wide" id="connectBtn">اتصال بالساعة</button><button class="secondary-btn wide" id="demoBtn">تشغيل المحاكاة التجريبية</button><small class="hint">يتطلب الاتصال الحقيقي متصفحًا يدعم Web Bluetooth واتصال HTTPS (مثل GitHub Pages)، بالإضافة إلى ساعة وبرمجية BLE متوافقة.</small></article>
+          <article class="panel"><h3>بيانات الجهاز</h3><div class="detail-row"><span>اسم الجهاز</span><b id="deviceName">—</b></div><div class="detail-row"><span>نوع الاتصال</span><b>Bluetooth LE</b></div><div class="detail-row"><span>آخر مزامنة</span><b id="lastSync">—</b></div><div class="detail-row"><span>حالة البيانات</span><b id="dataSource">بيانات تجريبية</b></div><hr><h3>بروتوكول البيانات</h3><p class="muted small-text">يلزم تعريف UUID للخدمة والخصائص التي ترسلها الساعة، ثم الاتفاق على صيغة البيانات مع برنامج المتحكم الدقيق.</p></article>
+        </div>
+      </section>
+
+      <section class="page-section" id="alerts">
+        <div class="section-intro"><h2>التنبيهات</h2><p>تنبيهات توضيحية مبنية على بيانات العرض التجريبية.</p></div>
+        <article class="panel"><div class="panel-heading"><h3>سجل التنبيهات</h3><button class="secondary-btn" id="clearAlerts">مسح السجل</button></div><div id="allAlerts" class="alert-list"></div></article>
+      </section>
+
+      <section class="page-section" id="reports">
+        <div class="section-intro"><h2>السجل والتقارير</h2><p>سجل القراءات التي تم عرضها في هذه الجلسة.</p></div>
+        <article class="panel"><div class="panel-heading"><h3>سجل القراءات</h3><button class="secondary-btn" id="exportBtn">تصدير CSV</button></div><div class="table-wrap"><table><thead><tr><th>الوقت</th><th>الجلوكوز</th><th>النبض</th><th>الأكسجين</th><th>الحرارة</th><th>المصدر</th></tr></thead><tbody id="historyRows"></tbody></table></div></article>
+      </section>
+
+      <section class="page-section" id="profile">
+        <div class="section-intro"><h2>ملف المريض</h2><p>بيانات تجريبية قابلة للتعديل محليًا في هذه الواجهة.</p></div>
+        <article class="panel profile-form"><label>اسم المريض<input id="patientName" value="مستخدم تجريبي"></label><label>العمر<input id="patientAge" type="number" min="1" max="120" placeholder="العمر"></label><label>جهة اتصال للطوارئ<input id="emergencyContact" placeholder="رقم التواصل"></label><label>ملاحظات<input id="patientNotes" placeholder="ملاحظات اختيارية"></label><button class="primary-btn" id="saveProfile">حفظ البيانات على هذا الجهاز</button><p id="profileSaved" class="muted"></p></article>
+      </section>
+      <footer>SPACE HEALTH <span>•</span> نموذج أولي تعليمي — ليس جهازًا طبيًا معتمدًا</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
